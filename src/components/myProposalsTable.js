@@ -35,7 +35,7 @@ export const myProposalsTable = async (instance,myAddress) =>{
               uID:i,
               id:res['0'][i],
               title:res2['0'],
-              amount:res['1'][i],
+              amount:res['1'][i]/1000000000000000000,
               funded:res2['8']
             })
         })
@@ -45,7 +45,7 @@ export const myProposalsTable = async (instance,myAddress) =>{
     catch{
       console.log("you have no proposals")
     }
-		return(<BootstrapTable keyField='uID' data={ products } columns={ columns } classes={ "bTable" } striped hover/>)
+		return(<BootstrapTable keyField='uID' data={ products } columns={ columns } classes={ "bTable" } bordered={ false } striped/>)
   };
 
 

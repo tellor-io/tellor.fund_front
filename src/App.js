@@ -36,6 +36,7 @@ class App extends Component {
 
   componentDidMount = async () => {
     this.handleCloseSubmit = this.handleCloseSubmit.bind(this);
+    this.updateHandler = this.updateHandler.bind(this);
     this.handleWithdrawSubmit = this.handleWithdrawSubmit.bind(this);
     this.handleFundSubmit = this.handleFundSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -50,6 +51,7 @@ class App extends Component {
       const openTable = await openProposalsTable(instance);
       const myTable = await myProposalsTable(instance,accounts[0]);
       await this.setState({web3,accounts,openTable,myTable,availableBalance,price,tellorAddress,tellorInstance,contract:instance})
+      console.log(this.state.contract)
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -59,6 +61,15 @@ class App extends Component {
 
   };
 
+  updateHandler() {
+      openProposalsTable(this.state.contract).then((res)=>{
+        this.setState({openTable:res})
+        myProposalsTable(this.state.contract,this.state.accounts[0])
+      });
+      myProposalsTable(this.state.contract,this.state.accounts[0]).then((res)=>{
+        this.setState({myTable:res})
+      });
+  }
 
   handleChange(e,target) {
     let change = {}
@@ -72,7 +83,8 @@ class App extends Component {
           to: contractAddress,
           value:0,
           gasPrice: '20000000000' 
-        }).then(function(res){
+        }).then((res)=>{
+          this.updateHandler()
           console.log("response: ", res)
     });
   }
@@ -82,7 +94,8 @@ class App extends Component {
           to: contractAddress,
           value:0,
           gasPrice: '20000000000' 
-        }).then(function(res){
+        }).then((res)=>{
+          this.updateHandler()
           console.log("response: ", res)
     });
   }
@@ -100,7 +113,8 @@ class App extends Component {
           to: contractAddress,
           value:0,
           gasPrice: '20000000000' 
-        }).then(function(res){
+        }).then((res)=>{
+          this.updateHandler()
           console.log("response: ", res)
       });
     })

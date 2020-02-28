@@ -22,6 +22,11 @@
 .bTable{
   color:white;
 }
+
+.bTableH:hover{
+  color:white;
+}
+
 .Header{
   display: flex;
   align-items: center;

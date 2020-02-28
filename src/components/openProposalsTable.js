@@ -73,7 +73,7 @@ export const openProposalsTable = async (instance) =>{
     catch{
       console.log("no open proposals")
     }
-    return (<BootstrapTable keyField='id' data={ products } columns={ columns } classes={ "bTable" } striped hover/>)
+    return (<BootstrapTable keyField='id' data={ products } columns={ columns } classes={ "bTable" } bordered={ false } rowClasses={ "bTableH" } striped/>)
 }
 
 ;
