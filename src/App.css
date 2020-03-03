@@ -10,6 +10,19 @@
   font-size:16px;
 }
 
+.ModalH{
+  font-size:20px;
+  font-weight: bold;
+}
+.MyModal{
+  position:absolute;
+  width: 75%;
+  font-family: Roboto;
+    font-style: normal;
+  font-weight: normal;
+  font-size:16px;
+}
+
 .HeaderContainer{
   display: flex;
   align-items: center;
@@ -23,9 +36,6 @@
   color:white;
 }
 
-.bTableH:hover{
-  color:white;
-}
 
 .Header{
   display: flex;
@@ -107,8 +117,24 @@ button{
   display: inline-block;
   font-size: 14px;
 
+
+}
+.question{
+  clear: left;
+  float:left;
+  padding:4px;
+   overflow: visible;
 }
 
+.Button1{
+    display:flex;
+    margin-left:-31px;
+  padding:.5vh;
+  align-items: left;
+  justify-content: left;
+  vertical-align: bottom;
+     overflow: visible;
+}
 input {
   width: 20%;
 }
@@ -172,3 +198,4 @@ a{
   width: 680px;
   height: 100%;
 }
+
