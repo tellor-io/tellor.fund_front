@@ -17,7 +17,7 @@ import {
   TwitterIcon
 } from "react-share";
 
-const contractAddress ="0x72F24506bad04B64BE1bb9332F0DEA5C5d519630"//"0x7d67E614d92b9D070839954dfd82ceEc7daFDAeD";
+const contractAddress ="0x6BCA541fBDdb50d1c66272982Ab34E8cc850f349"//"0x7d67E614d92b9D070839954dfd82ceEc7daFDAeD";
 console.log(contractAddress);
 
 class MyModal extends React.Component {
@@ -104,7 +104,8 @@ class App extends Component {
             fundID:0,
             fundAmount:0,
             closeID:0,
-            modal: false
+            modal: false,
+            errors:false
             };
 
 
@@ -129,7 +130,7 @@ class App extends Component {
       console.log(this.state.contract)
     } catch (error) {
       alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
+        `Failed to load web3, be sure to be connected to the right Metamask network`,
       );
       console.error(error);
     }
@@ -163,15 +164,22 @@ class App extends Component {
     this.setState(change)
   }
   handleCloseSubmit(event) {
-    this.state.contract.methods.closeProposal(this.state.closeID).send({
-          from: this.state.accounts[0],
-          to: contractAddress,
-          value:0,
-          gasPrice: '20000000000' 
-        }).then((res)=>{
-          this.updateHandler()
-          console.log("response: ", res)
-    });
+    this.validateForm("close")
+    if(this.state.errors){
+      this.state.contract.methods.closeProposal(this.state.closeID).send({
+            from: this.state.accounts[0],
+            to: contractAddress,
+            value:0,
+            gasPrice: '20000000000' 
+          }).then((res)=>{
+            this.updateHandler()
+            console.log("response: ", res)
+      });
+    }else{
+      this.setState({errors:false})
+      console.log("Error in Form Submission")
+    }
+
   }
   handleWithdrawSubmit(event) {
     this.state.contract.methods.withdrawMoney().send({
@@ -185,15 +193,17 @@ class App extends Component {
     });
   }
   handleFundSubmit(event) {
-   this.state.tellorInstance.methods.approve(contractAddress,this.state.web3.utils.toWei(this.state.fundAmount)).send({
+      this.validateForm("fund")
+    if(this.state.errors){
+     this.state.tellorInstance.methods.approve(contractAddress,this.state.web3.utils.toWei(this.state.fundAmount)).send({
           from: this.state.accounts[0],
           to:this.state.tellorInstance._address,
           value:0,
           gasPrice: '20000000000' 
-   }).once('receipt', (receipt) =>{
-      console.log("approved",receipt)
-      console.log("funding",this.state.fundID,this.state.fundAmount)
-      this.state.contract.methods.fund(this.state.fundID,this.state.web3.utils.toWei(this.state.fundAmount)).send({
+        }).once('receipt', (receipt) =>{
+        console.log("approved",receipt)
+       console.log("funding",this.state.fundID,this.state.fundAmount)
+        this.state.contract.methods.fund(this.state.fundID,this.state.web3.utils.toWei(this.state.fundAmount)).send({
           from: this.state.accounts[0],
           to: contractAddress,
           value:0,
@@ -201,9 +211,33 @@ class App extends Component {
         }).then((res)=>{
           this.updateHandler()
           console.log("response: ", res)
-      });
-    })
+        });
+      })
+       }else{
+      this.setState({errors:false})
+      console.log("Error in Form Submission")
+    }
   }
+
+  validateForm(event){
+    if(event="fund"){
+      if(this.state.fundAmount < 1){
+        this.setState({errors:true});
+        alert('Fund amount must be >= 1')
+
+      }
+      else if (this.state.fundID ==0){
+        this.setState({errors:true});
+        alert('Fund ID must be > 0')
+      }
+    }else if(event="close"){
+      if (this.state.closeID ==0){
+        this.setState({errors:true});
+        alert('Close ID must be > 0')
+      }
+    }
+  }
+
 
   render() {
     if (!this.state.web3) {
