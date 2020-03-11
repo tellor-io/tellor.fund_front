@@ -17,7 +17,7 @@ import {
   TwitterIcon
 } from "react-share";
 
-const contractAddress ="0x6BCA541fBDdb50d1c66272982Ab34E8cc850f349"//"0x7d67E614d92b9D070839954dfd82ceEc7daFDAeD";
+const contractAddress ="0xc47d2339077F5aC117dD1B2953D5c54a0c0B89fa"//"0x7d67E614d92b9D070839954dfd82ceEc7daFDAeD";
 console.log(contractAddress);
 
 class MyModal extends React.Component {
@@ -121,7 +121,7 @@ class App extends Component {
       const accounts = await web3.eth.getAccounts();
       const instance = await new web3.eth.Contract(TellorFund.abi,this.state.contractAddress);
       const availableBalance = web3.utils.fromWei(await instance.methods.getAvailableForWithdraw(accounts[0]).call());
-      const price = await instance.methods.viewTellorPrice().call();
+      const price = await instance.methods.viewTellorPrice().call()/100;
       const tellorAddress = await instance.methods.tellorAddress().call()
       const tellorInstance = await new web3.eth.Contract(Tellor.abi,tellorAddress);
       const openTable = await openProposalsTable(instance);
@@ -163,6 +163,8 @@ class App extends Component {
     console.log("changing",e.target)
     this.setState(change)
   }
+
+
   handleCloseSubmit(event) {
     this.validateForm("close")
     if(this.state.errors){

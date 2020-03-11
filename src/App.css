@@ -32,6 +32,10 @@
   top:2vh;
 }
 
+.table-horiz-scroll {
+    overflow-x:auto;
+ }
+ 
 .bTable{
   color:white;
 }

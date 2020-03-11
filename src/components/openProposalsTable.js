@@ -8,32 +8,44 @@ export const openProposalsTable = async (instance) =>{
     const columns = [{
           dataField: 'id',
           text: '',
-          sort: true
+          sort: true,
+          headerStyle: (colum, colIndex) => {
+            return { width: '5%', textAlign: 'left' };
+          }
         },
         {
           dataField: 'title',
-          text: 'title'
+          text: 'title',
         }, 
         {
           dataField: 'details',
-          text: 'details'
+          text: 'details',
         },
         {
           dataField: 'amount',
-          text: 'amount'
+          text: 'amount',
+          headerStyle: (colum, colIndex) => {
+            return { width: '15%', textAlign: 'left' };
+          }
         },
                 {
           dataField: 'funded',
-          text: '% funded'
+          text: '% funded',
+          headerStyle: (colum, colIndex) => {
+            return { width: '15%', textAlign: 'left' };
+          }
         },
         {
           dataField: 'time',
-          text: 'time left',
+          text: 'days left',
+          headerStyle: (colum, colIndex) => {
+            return { width: '10%', textAlign: 'left' };
+          }
 
     }];
 
     var products = []
-    var xx,hours,minutes,seconds,formattedTime
+    var xx,hours,minutes,seconds,days,formattedTime
     var today = Math.round((new Date()).getTime() / 1000);
     try{
       await instance.methods.getAllOpenProposals().call().then(async function(res){
@@ -41,20 +53,9 @@ export const openProposalsTable = async (instance) =>{
           await instance.methods.getProposalById(res[i]).call().then(function(res2){
             if(res2['6']){
             xx = new Date((res2['4']-today) * 1000)
-
-                          // Get hours from the timestamp 
-            hours = xx.getUTCHours(); 
+            days = xx.getUTCDate()-1;
   
-            // Get minutes part from the timestamp 
-            minutes = xx.getUTCMinutes(); 
-  
-            // Get seconds part from the timestamp 
-            seconds = xx.getUTCSeconds(); 
-  
-            formattedTime = hours.toString().padStart(2, '0') + ':' + 
-                minutes.toString().padStart(2, '0') + ':' + 
-                seconds.toString().padStart(2, '0');
-
+            formattedTime = days.toString().padStart(2,'0')
 
               products.push({
                 id:res[i],
