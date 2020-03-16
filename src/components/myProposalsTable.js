@@ -31,7 +31,6 @@ export const myProposalsTable = async (instance,myAddress) =>{
       console.log("My Prop",res)
       for(var i=0;i<res['0'].length;i++){
         await instance.methods.getProposalById(res['0'][i]).call().then(function(res2){
-            if(res['0'][i] > 2){
               products.push({
                 uID:i,
                 id:res['0'][i],
@@ -39,7 +38,6 @@ export const myProposalsTable = async (instance,myAddress) =>{
                 amount:res['1'][i]/1000000000000000000,
                 funded:res2['8']
               })
-            }
         })
       }
       })
