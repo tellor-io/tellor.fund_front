@@ -167,7 +167,7 @@ class App extends Component {
 
   handleCloseSubmit(event) {
     this.validateForm("close")
-    if(this.state.errors){
+    if(!this.state.errors){
       this.state.contract.methods.closeProposal(this.state.closeID).send({
             from: this.state.accounts[0],
             to: contractAddress,
@@ -196,7 +196,7 @@ class App extends Component {
   }
   handleFundSubmit(event) {
       this.validateForm("fund")
-    if(this.state.errors){
+    if(!this.state.errors){
      this.state.tellorInstance.methods.approve(contractAddress,this.state.web3.utils.toWei(this.state.fundAmount)).send({
           from: this.state.accounts[0],
           to:this.state.tellorInstance._address,
