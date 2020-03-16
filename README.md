@@ -15,4 +15,4 @@ Mainnet Address:
 
 Web Address:
 
-	[https://tellor.fund](https://tellor.fund)
+[https://tellor.fund](https://tellor.fund)
