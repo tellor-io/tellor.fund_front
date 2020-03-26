@@ -222,7 +222,7 @@ class App extends Component {
   }
 
   validateForm(event){
-    if(event="fund"){
+    if(event=="fund"){
       if(this.state.fundAmount < 1){
         this.setState({errors:true});
         alert('Fund amount must be >= 1')
@@ -232,7 +232,7 @@ class App extends Component {
         this.setState({errors:true});
         alert('Fund ID must be > 0')
       }
-    }else if(event="close"){
+    }else if(event=="close"){
       if (this.state.closeID ==0){
         this.setState({errors:true});
         alert('Close ID must be > 0')
