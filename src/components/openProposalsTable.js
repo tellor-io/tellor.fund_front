@@ -1,5 +1,5 @@
 import BootstrapTable from 'react-bootstrap-table-next';
-import React, { Component }  from 'react';
+import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
@@ -45,17 +45,25 @@ export const openProposalsTable = async (instance) =>{
     }];
 
     var products = []
-    var xx,hours,minutes,seconds,days,formattedTime
+    var xx,days,formattedTime
     var today = Math.round((new Date()).getTime() / 1000);
     try{
       await instance.methods.getAllOpenProposals().call().then(async function(res){
         for(var i=1;i<res.length;i++){
           await instance.methods.getProposalById(res[i]).call().then(function(res2){
             if(res2['6']){
-            xx = new Date((res2['4']-today) * 1000)
-            days = xx.getUTCDate()-1;
-  
-            formattedTime = days.toString().padStart(2,'0')
+              console.log('res4',res2['4'])
+              if(res2['4'] > today){
+                xx = new Date((res2['4']-today) * 1000)
+                console.log(xx);
+                days = xx.getUTCDate()-1;
+
+              } 
+              else{
+                days = 0;
+              }
+              console.log('days',days)
+              formattedTime = days.toString().padStart(2,'0')
 
               products.push({
                 id:res[i],
